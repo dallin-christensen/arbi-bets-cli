@@ -53,8 +53,11 @@ const scrapeData = async (eventType = 'mma', opposing = true) => {
     }
   }
 
-  const buildFightPropName = (lastName1, lastName2) => {
-    const names = [lastName1.toLowerCase(), lastName2.toLowerCase()]
+  const buildFightPropName = (eventOne, eventTwo) => {
+    const names = [
+      `${eventOne.firstName.toLowerCase()}+${eventOne.lastName.toLowerCase()}`,
+      `${eventTwo.firstName.toLowerCase()}+${eventTwo.lastName.toLowerCase()}`
+    ]
     names.sort((a, b) => a.localeCompare(b))
     return names.join('_v_')
   }
@@ -68,7 +71,7 @@ const scrapeData = async (eventType = 'mma', opposing = true) => {
         underdog: areUnderdogOdds(fighterLine.odds)
       })))
       .reduce((accObj, event) => {
-        const propName = buildFightPropName(event[0].lastName, event[1].lastName)
+        const propName = buildFightPropName(event[0], event[1])
 
         const getUnderdog = (fighterLines) => {
           const underdogFighter = fighterLines.find((fighterLine) => fighterLine.underdog)
